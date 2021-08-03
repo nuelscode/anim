@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import Minus from "./images/minus.png";
+import { AntDesign } from '@expo/vector-icons'; 
 import Modal from "./modal";
 
 // create a component
@@ -15,22 +15,27 @@ const ImageFadeIn = (props) => {
       {
         display
         ?  <>
-          <TouchableOpacity
-            onPress={() => {
-              setImages((prev) => {
-                const newImages = [...prev];
-                newImages[item.id] = { id: item.id, uri: null };
-                return [...newImages];
-              });
-              setDisplay(false);
-              // console.log(item.id);
-            }} 
-            style = {{ width: 140, height: 140, position: "absolute", bottom: 70, left: 40 }}>
+          <View 
+            style = {styles.absoluteWrapper}>
 
              <Image 
-                style = {{ flex: 1, width: null, height: null, borderRadius: 70 }} 
+                style = {styles.image} 
                 source = {{ uri: item.uri }} />
-          </TouchableOpacity>
+
+             <TouchableOpacity 
+                onPress={() => {
+                  setImages((prev) => {
+                    const newImages = [...prev];
+                    newImages[item.id] = { id: item.id, uri: null };
+                    return [...newImages];
+                  });
+                  setDisplay(false);
+                  // console.log(item.id);
+                }}
+                style = {styles.minusBtnWrapper}>
+             <AntDesign name="minus" size={24} color="black" />
+             </TouchableOpacity>   
+          </View>
 
            </>
         : null  
@@ -70,6 +75,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "red",
   },
+  minusBtnWrapper: {
+     position: "absolute", 
+     width: 30, 
+     height: 30, 
+     borderWidth: 2, 
+     borderColor: "#000", 
+     borderRadius: 15, 
+     alignItems: "center", 
+     justifyContent: "center" 
+  },
+  absoluteWrapper: { 
+     width: 140,
+     height: 140, 
+     position: "absolute", 
+     bottom: 70, 
+     left: 40 
+  },
+  image: {
+     flex: 1, 
+     width: null, 
+     height: null, 
+     borderRadius: 70 
+    }
 });
 
 //make this component available to the app

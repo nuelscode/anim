@@ -1,21 +1,40 @@
 //import liraries
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import Minus from "./images/minus.png";
 import Modal from "./modal";
 
 // create a component
 const ImageFadeIn = (props) => {
   const [display, setDisplay] = useState(false);
+  const { item, setImages } = props;
   return (
     <>
-      <Modal
-        display={display}
-        item={props.item}
-        setDisplay={setDisplay}
-        setImages={props.setImages}
-      />
+      {
+        display
+        ?  <>
+          <TouchableOpacity
+            onPress={() => {
+              setImages((prev) => {
+                const newImages = [...prev];
+                newImages[item.id] = { id: item.id, uri: null };
+                return [...newImages];
+              });
+              setDisplay(false);
+              // console.log(item.id);
+            }} 
+            style = {{ width: 140, height: 140, position: "absolute", bottom: 70, left: 40 }}>
+
+             <Image 
+                style = {{ flex: 1, width: null, height: null, borderRadius: 70 }} 
+                source = {{ uri: item.uri }} />
+          </TouchableOpacity>
+
+           </>
+        : null  
+      }
       <Animatable.View
         style={{
           bottom: props.bottom || 0,
@@ -43,7 +62,6 @@ const ImageFadeIn = (props) => {
     </>
   );
 };
-
 // define your styles
 const styles = StyleSheet.create({
   container: {
